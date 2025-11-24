@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - Mr Stickerman{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <h2>Checkout</h2>
+    <hr>
+    
+    <div class="row">
+        <!-- Checkout Form -->
+        <div class="col-md-7">
+            <h4>Customer Details</h4>
+            <form method="POST" novalidate>
+                {{ form.hidden_tag() }}
+                
+                <div class="form-group">
+                    {{ form.firstname.label(class="form-label") }}
+                    {{ form.firstname(class="form-control" + (" is-invalid" if form.firstname.errors else "")) }}
+                    {% if form.firstname.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.firstname.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.surname.label(class="form-label") }}
+                    {{ form.surname(class="form-control" + (" is-invalid" if form.surname.errors else "")) }}
+                    {% if form.surname.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.surname.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                    {% if form.email.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.phone.label(class="form-label") }}
+                    {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else "")) }}
+                    {% if form.phone.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.phone.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <hr>
+                {{ form.submit(class="btn btn-success btn-lg btn-block") }}
+                <a href="{{ url_for('views.order') }}" class="btn btn-outline-secondary btn-block mt-2">Back to Basket</a>
+            </form>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Order Summary</h4>
+                    <hr>
+                    <h6>Items in Your Order:</h6>
+                    <ul class="list-group list-group-flush mb-3">
+                        {% for product in order.products %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ product.name }}
+                            <span class="text-success">${{ "%.2f"|format(product.price) }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <strong>Total Items:</strong>
+                        <span>{{ order.products|length }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <strong>Total Cost:</strong>
+                        <span class="text-success h5">${{ "%.2f"|format(total_cost) }}</span>
+                    </div>
+                    {% if total_cost >= 20 %}
+                    <div class="alert alert-success mt-3" role="alert">
+                        🎉 <strong>Free Shipping!</strong> Your order qualifies.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

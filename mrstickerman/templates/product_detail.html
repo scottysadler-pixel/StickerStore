@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Mr Stickerman{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('views.index') }}">Home</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Product Details -->
+    <div class="row mb-5">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='images/' + product.image_url) }}" 
+                 class="img-fluid rounded shadow" alt="{{ product.name }}">
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h2>{{ product.name }}</h2>
+            <p class="text-muted">{{ product.category }}</p>
+            
+            <h3 class="text-success">${{ "%.2f"|format(product.price) }}</h3>
+            {% if product.in_stock %}
+                <p><span class="badge badge-success">In Stock</span></p>
+            {% else %}
+                <p><span class="badge badge-danger">Out of Stock</span></p>
+            {% endif %}
+            
+            <hr>
+            
+            <h5>Product Specifications</h5>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td><strong>Sticker Count</strong></td>
+                        <td>{{ product.sticker_count }} stickers per pack</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Size</strong></td>
+                        <td>{{ product.size }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Finish</strong></td>
+                        <td>{{ product.finish }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Material</strong></td>
+                        <td>{{ product.material }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr>
+            
+            <h5>Description</h5>
+            <p>{{ product.description }}</p>
+            
+            <hr>
+            
+            {% if product.in_stock %}
+            <form method="POST" action="{{ url_for('views.order') }}">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Add to Basket</button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary btn-lg btn-block" disabled>Out of Stock</button>
+            {% endif %}
+            <a href="{{ url_for('views.index') }}" class="btn btn-outline-secondary btn-block mt-2">Continue Shopping</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
