@@ -8,6 +8,9 @@ Usage:
     python run.py
 
 The application will be available at http://localhost:5000
+
+SECURITY NOTE: Debug mode is enabled for development purposes only.
+For production deployment, set debug=False and use a production WSGI server like Gunicorn.
 """
 
 from mrstickerman import create_app, db
@@ -21,8 +24,9 @@ with app.app_context():
     print("Database tables created successfully!")
 
 if __name__ == '__main__':
-    # Run the application in debug mode
+    # Run the application in debug mode for development
     # Debug mode provides helpful error messages and auto-reloads on code changes
+    # WARNING: Do not use debug=True in production as it may expose security vulnerabilities
     print("Starting Mr Stickerman application...")
     print("Visit http://localhost:5000 in your browser")
     print("To seed the database, visit http://localhost:5000/admin/dbseed")

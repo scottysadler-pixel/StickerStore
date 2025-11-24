@@ -1,6 +1,8 @@
 from . import db
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column
+from typing import Optional
+from datetime import datetime
 
 # Association table for many-to-many relationship between Order and Product
 orderdetails = db.Table('orderdetails',
@@ -39,14 +41,14 @@ class Order(db.Model):
     status: Mapped[bool] = mapped_column(sa.Boolean, default=False, nullable=False)
     
     # Customer information (empty until checkout)
-    firstname: Mapped[str] = mapped_column(sa.String(50), nullable=True)
-    surname: Mapped[str] = mapped_column(sa.String(50), nullable=True)
-    email: Mapped[str] = mapped_column(sa.String(100), nullable=True)
-    phone: Mapped[str] = mapped_column(sa.String(20), nullable=True)
+    firstname: Mapped[Optional[str]] = mapped_column(sa.String(50))
+    surname: Mapped[Optional[str]] = mapped_column(sa.String(50))
+    email: Mapped[Optional[str]] = mapped_column(sa.String(100))
+    phone: Mapped[Optional[str]] = mapped_column(sa.String(20))
     
     # Order details
-    totalcost: Mapped[float] = mapped_column(sa.Float, nullable=True)
-    date: Mapped[sa.DateTime] = mapped_column(sa.DateTime, nullable=True)
+    totalcost: Mapped[Optional[float]] = mapped_column(sa.Float)
+    date: Mapped[Optional[datetime]] = mapped_column(sa.DateTime)
     
     # Many-to-many relationship with Product through orderdetails table
     products = db.relationship('Product', secondary=orderdetails, backref='orders')
