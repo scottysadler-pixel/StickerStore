@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmation - Mr Stickerman{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="alert alert-success">
+        <h2>Order Confirmed! 🎉</h2>
+        <p>Thank you for your order, {{ order.firstname }}!</p>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4>Order #{{ order.id }}</h4>
+            <p class="mb-0"><small>Placed on {{ order.date.strftime('%d/%m/%Y at %I:%M %p') }}</small></p>
+        </div>
+        <div class="card-body">
+            <h5>Customer Details</h5>
+            <p>
+                <strong>Name:</strong> {{ order.firstname }} {{ order.surname }}<br>
+                <strong>Email:</strong> {{ order.email }}<br>
+                <strong>Phone:</strong> {{ order.phone }}
+            </p>
+            
+            <hr>
+            
+            <h5>Order Items</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detail in order.details %}
+                    <tr>
+                        <td>{{ detail.product.name }}</td>
+                        <td>{{ detail.quantity }}</td>
+                        <td>${{ "%.2f"|format(detail.product.price) }}</td>
+                        <td>${{ "%.2f"|format(detail.subtotal) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" class="text-right">Total:</th>
+                        <th>${{ "%.2f"|format(order.totalcost) }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div class="alert alert-info mt-4">
+                <p><strong>What's Next?</strong></p>
+                <p>We'll send you an email confirmation at {{ order.email }} with your order details and tracking information.</p>
+                <p>Your stickers will be dispatched within 2-3 business days.</p>
+            </div>
+            
+            <a href="{{ url_for('views.index') }}" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

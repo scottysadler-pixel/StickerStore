@@ -1,10 +1,27 @@
 from . import db
 
-# Association table for many-to-many relationship between Order and Product
-orderdetails = db.Table('orderdetails',
-    db.Column('order_id', db.Integer, db.ForeignKey('orders.id'), nullable=False),
-    db.Column('product_id', db.Integer, db.ForeignKey('products.id'), nullable=False)
-)
+# OrderDetail model for tracking product quantities in orders
+class OrderDetail(db.Model):
+    __tablename__ = 'orderdetails'
+    
+    # Primary key
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # Foreign keys
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    
+    # Quantity of this product in the order
+    quantity = db.Column(db.Integer, default=1, nullable=False)
+    
+    # Subtotal for this line item (quantity * price)
+    subtotal = db.Column(db.Float, nullable=False)
+    
+    # Relationships
+    product = db.relationship('Product', backref='order_details')
+    
+    def __repr__(self):
+        return f"<OrderDetail Order:{self.order_id} Product:{self.product_id} Qty:{self.quantity}>"
 
 class Product(db.Model):
     __tablename__ = 'products'
@@ -46,8 +63,8 @@ class Order(db.Model):
     totalcost = db.Column(db.Float)
     date = db.Column(db.DateTime)
     
-    # Many-to-many relationship with Product through orderdetails table
-    products = db.relationship('Product', secondary=orderdetails, backref='orders')
+    # Relationship with OrderDetail
+    details = db.relationship('OrderDetail', backref='order', lazy=True, cascade='all, delete-orphan')
     
     def __repr__(self):
         return f"<Order {self.id}>"
