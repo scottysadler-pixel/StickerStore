@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Mr Stickerman{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='images/' + product.image_url) }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
+        </div>
+        
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h2>{{ product.name }}</h2>
+            <p class="lead">${{ "%.2f"|format(product.price) }}</p>
+            
+            <hr>
+            
+            <h5>Description</h5>
+            <p>{{ product.description }}</p>
+            
+            <h5>Product Details</h5>
+            <ul>
+                <li><strong>Category:</strong> {{ product.category }}</li>
+                <li><strong>Sticker Count:</strong> {{ product.sticker_count }} stickers</li>
+                <li><strong>Size:</strong> {{ product.size }}</li>
+                <li><strong>Material:</strong> {{ product.material }}</li>
+                <li><strong>Finish:</strong> {{ product.finish }}</li>
+                <li><strong>Availability:</strong> {% if product.in_stock %}<span class="text-success">In Stock</span>{% else %}<span class="text-danger">Out of Stock</span>{% endif %}</li>
+            </ul>
+            
+            <hr>
+            
+            {% if product.in_stock %}
+            <form method="POST" action="{{ url_for('views.add_to_order') }}">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <button type="submit" class="btn btn-success btn-lg">Add to Basket</button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+            {% endif %}
+            
+            <a href="{{ url_for('views.index') }}" class="btn btn-outline-secondary btn-lg ml-2">Back to Shop</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

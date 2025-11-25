@@ -4,5 +4,3 @@ Flask-WTF==1.1.0
 email-validator==2.0.0
 Flask-Bootstrap==3.3.7.1
 WTForms==3.0.0
-
-This file contains all the Python dependencies needed to run the Mr Stickerman Flask application.
