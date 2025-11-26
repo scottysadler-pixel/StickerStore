@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Shop All - Mr Stickerman{% endblock %}
+
+{% block content %}
+<section class="all-products py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">All Products</h2>
+        <p class="text-center text-muted mb-4">Browse our complete collection</p>
+        
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/' + product.image_url) }}" alt="{{ product.name }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description[:100] }}...</p>
+                        <p class="card-text"><strong>${{ "%.2f"|format(product.price) }}</strong></p>
+                        <p class="text-muted small">{{ product.sticker_count }} stickers | {{ product.size }} | {{ product.category }}</p>
+                        <a href="{{ url_for('views.product_details', product_id=product.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                        <form method="POST" action="{{ url_for('views.add_to_order') }}" class="d-inline">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-success btn-sm">Add to Basket</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

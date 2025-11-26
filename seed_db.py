@@ -113,15 +113,15 @@ def seed_database():
                 in_stock=True
             ),
             Product(
-                name="Marvel Heroes Pack",
-                description="Assemble! Featuring your favourite Marvel superheroes including Spider-Man, Iron Man, and Captain America.",
+                name="Superheroes Pack",
+                description="Amazing superhero stickers featuring popular comic book characters and symbols.",
                 price=5.99,
                 category="Superheroes & Comics",
                 sticker_count=50,
                 size="3-6 cm",
                 material="Premium waterproof vinyl",
                 finish="Glossy",
-                image_url="marvel.webp",
+                image_url="superheroes.webp",
                 in_stock=True
             ),
             Product(

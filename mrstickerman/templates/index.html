@@ -103,11 +103,13 @@
 <!-- Categories Section -->
 <section class="categories py-5" id="categories">
     <div class="container">
-        <h2 class="text-center mb-4">Browse Categories</h2>
+        <h2 class="text-center mb-4">Browse by Category</h2>
         <div class="row">
             {% for category in categories %}
-            <div class="col-md-4 mb-2">
-                <p>{{ category }}</p>
+            <div class="col-md-4 mb-3">
+                <a href="{{ url_for('views.category', category_name=category) }}" class="btn btn-outline-primary btn-block">
+                    {{ category }}
+                </a>
             </div>
             {% endfor %}
         </div>
