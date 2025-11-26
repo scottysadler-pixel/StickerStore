@@ -69,11 +69,34 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('views.index') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
-                <li class="nav-item"><a class="nav-link" href="#new-arrivals">New Arrivals</a></li>
+                
+                <!-- Categories Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-toggle="dropdown">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='TV Shows & Movies') }}">TV Shows & Movies</a>
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='Gaming & Online') }}">Gaming & Online</a>
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='Pop Culture & Characters') }}">Pop Culture & Characters</a>
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='Animals & Nature') }}">Animals & Nature</a>
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='Superheroes & Comics') }}">Superheroes & Comics</a>
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='Sports & Activities') }}">Sports & Activities</a>
+                        <a class="dropdown-item" href="{{ url_for('views.category', category_name='Brands & Logos') }}">Brands & Logos</a>
+                    </div>
+                </li>
+                
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('views.shop') }}">Shop All</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
             </ul>
+            
+            <!-- Search Form -->
+            <form class="form-inline my-2 my-lg-0 mr-3" method="GET" action="{{ url_for('views.index') }}">
+                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search products..." value="{{ search_query or '' }}">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('views.basket') }}">

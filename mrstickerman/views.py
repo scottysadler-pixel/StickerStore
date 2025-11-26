@@ -159,6 +159,24 @@ def remove_item():
     
     return redirect(url_for('views.basket'))
 
+@views.route('/category/<category_name>')
+def category(category_name):
+    """Display products filtered by category."""
+    products = Product.query.filter_by(category=category_name).all()
+    
+    return render_template('category.html', 
+                          products=products, 
+                          category_name=category_name)
+
+
+@views.route('/shop')
+def shop():
+    """Display all products."""
+    products = Product.query.filter_by(in_stock=True).all()
+    
+    return render_template('shop.html', products=products)
+
+
 @views.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     """Handle checkout process."""
