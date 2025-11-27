@@ -59,6 +59,12 @@ class Order(db.Model):
     email = db.Column(db.String(100))
     phone = db.Column(db.String(20))
     
+    # Delivery address
+    address = db.Column(db.String(200))
+    suburb = db.Column(db.String(100))
+    state = db.Column(db.String(20))
+    postcode = db.Column(db.String(10))
+    
     # Order details
     totalcost = db.Column(db.Float)
     date = db.Column(db.DateTime)
