@@ -19,7 +19,10 @@
             <p>
                 <strong>Name:</strong> {{ order.firstname }} {{ order.surname }}<br>
                 <strong>Email:</strong> {{ order.email }}<br>
-                <strong>Phone:</strong> {{ order.phone }}
+                <strong>Phone:</strong> {{ order.phone }}<br>
+                <strong>Delivery Address:</strong><br>
+                {{ order.address }}<br>
+                {{ order.suburb }}, {{ order.state }} {{ order.postcode }}
             </p>
             
             <hr>

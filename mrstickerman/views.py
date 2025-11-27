@@ -189,6 +189,10 @@ def checkout():
         order.surname = form.surname.data
         order.email = form.email.data
         order.phone = form.phone.data
+        order.address = form.address.data
+        order.suburb = form.suburb.data
+        order.state = form.state.data
+        order.postcode = form.postcode.data
         order.status = True  # Mark as completed
         order.date = datetime.now()
         
