@@ -27,7 +27,7 @@
                     </td>
                     <td>${{ "%.2f"|format(detail.product.price) }}</td>
                     <td>
-                        <!-- Quantity update form -->
+                <!-- quantity update form -->
                         <form method="POST" action="{{ url_for('views.update_quantity') }}" class="form-inline">
                             <input type="hidden" name="product_id" value="{{ detail.product.id }}">
                             <div class="input-group input-group-sm" style="width: 120px;">
@@ -43,7 +43,7 @@
                     </td>
                     <td><strong>${{ "%.2f"|format(detail.subtotal) }}</strong></td>
                     <td>
-                        <!-- Remove item form -->
+                        <!-- remove item form -->
                         <form method="POST" action="{{ url_for('views.remove_item') }}" class="d-inline">
                             <input type="hidden" name="product_id" value="{{ detail.product.id }}">
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Remove this item from your basket?')">Remove</button>

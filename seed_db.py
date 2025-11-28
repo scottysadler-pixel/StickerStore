@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Database seeding script for Mr Stickerman
-Populates the database with sample sticker products
+Seed the database with sticker products
 """
 from mrstickerman import create_app, db
 from mrstickerman.models import Product
@@ -9,15 +8,15 @@ from mrstickerman.models import Product
 app = create_app()
 
 def seed_database():
-    """Add sample products to the database."""
+    """adds products to db"""
     with app.app_context():
-        # Create tables if they don't exist
+        # create tables if needed
         db.create_all()
         
-        # Clear existing products
+        # clear existing products
         Product.query.delete()
         
-        # Sample products based on available images
+        # product list
         products = [
             Product(
                 name="Simpsons Pack",
@@ -163,7 +162,7 @@ def seed_database():
                 image_url="Logos.webp",
                 in_stock=True
             ),
-            # TV Shows & Movies - 6 new products
+            # tv shows and movies
             Product(
                 name="Bluey Pack",
                 description="Fun and colourful Bluey stickers featuring the beloved Australian cartoon family. Perfect for kids!",
@@ -236,7 +235,7 @@ def seed_database():
                 image_url="spongebob.webp",
                 in_stock=True
             ),
-            # Gaming & Online - 2 new products
+            # gaming stuff
             Product(
                 name="Roblox Pack",
                 description="Awesome Roblox stickers featuring popular game characters and iconic symbols from the platform.",
@@ -261,7 +260,7 @@ def seed_database():
                 image_url="aliens.webp",
                 in_stock=True
             ),
-            # Pop Culture & Characters - 7 new products
+            # pop culture
             Product(
                 name="Anime Collection Pack",
                 description="Extended anime collection with even more popular characters and symbols for anime lovers.",
@@ -358,7 +357,7 @@ def seed_database():
                 image_url="captions3.webp",
                 in_stock=True
             ),
-            # Animals & Nature - 5 new products
+            # animals and nature
             Product(
                 name="Animals 2 Pack",
                 description="More adorable animal stickers! Additional cute creatures to add to your collection.",
@@ -419,7 +418,7 @@ def seed_database():
                 image_url="breast-cancer.webp",
                 in_stock=True
             ),
-            # Superheroes & Comics - 2 new products
+            # superheroes
             Product(
                 name="Deadpool Pack",
                 description="Maximum effort! Hilarious Deadpool stickers featuring the merc with a mouth.",
@@ -444,7 +443,7 @@ def seed_database():
                 image_url="ironman.webp",
                 in_stock=True
             ),
-            # Sports & Activities - 1 new product
+            # sports
             Product(
                 name="Craft Beer Pack",
                 description="Cheers! Craft beer stickers featuring breweries, hops, and beer-themed designs.",
@@ -457,7 +456,7 @@ def seed_database():
                 image_url="beer.webp",
                 in_stock=True
             ),
-            # Brands & Logos - 3 new products
+            # brands
             Product(
                 name="Nike Pack",
                 description="Just Do It! Nike stickers featuring the iconic swoosh and athletic designs.",
@@ -496,7 +495,7 @@ def seed_database():
             ),
         ]
         
-        # Add all products to the database
+        # add products to db
         for product in products:
             db.session.add(product)
         
