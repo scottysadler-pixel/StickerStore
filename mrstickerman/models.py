@@ -1,23 +1,23 @@
 from . import db
 
-# OrderDetail model for tracking product quantities in orders
+# order detail model
 class OrderDetail(db.Model):
     __tablename__ = 'orderdetails'
     
-    # Primary key
+    # primary key
     id = db.Column(db.Integer, primary_key=True)
     
-    # Foreign keys
+    # foreign keys
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     
-    # Quantity of this product in the order
+    # quantity
     quantity = db.Column(db.Integer, default=1, nullable=False)
     
-    # Subtotal for this line item (quantity * price)
+    # subtotal
     subtotal = db.Column(db.Float, nullable=False)
     
-    # Relationships
+    # relationships
     product = db.relationship('Product', backref='order_details')
     
     def __repr__(self):
@@ -26,10 +26,10 @@ class OrderDetail(db.Model):
 class Product(db.Model):
     __tablename__ = 'products'
     
-    # Primary key
+    # primary key
     id = db.Column(db.Integer, primary_key=True)
     
-    # Product information
+    # product info
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(500), nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -47,29 +47,29 @@ class Product(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     
-    # Primary key
+    # primary key
     id = db.Column(db.Integer, primary_key=True)
     
-    # Order status (False = in basket, True = completed)
+    # order status - false = basket, true = done
     status = db.Column(db.Boolean, default=False, nullable=False)
     
-    # Customer information (empty until checkout)
+    # customer info
     firstname = db.Column(db.String(50))
     surname = db.Column(db.String(50))
     email = db.Column(db.String(100))
     phone = db.Column(db.String(20))
     
-    # Delivery address
+    # delivery address
     address = db.Column(db.String(200))
     suburb = db.Column(db.String(100))
     state = db.Column(db.String(20))
     postcode = db.Column(db.String(10))
     
-    # Order details
+    # order details
     totalcost = db.Column(db.Float)
     date = db.Column(db.DateTime)
     
-    # Relationship with OrderDetail
+    # relationship with order details
     details = db.relationship('OrderDetail', backref='order', lazy=True, cascade='all, delete-orphan')
     
     def __repr__(self):
