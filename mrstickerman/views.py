@@ -5,20 +5,20 @@ from .models import Product, Order, OrderDetail
 from .forms import CheckoutForm
 import random
 
-# Create views blueprint
+# create views blueprint
 views = Blueprint('views', __name__)
 
 def get_or_create_order():
-    """Get the current basket order or create a new one."""
+    """get current basket order or create new one"""
     order_id = session.get('order_id')
     
     if order_id:
         order = Order.query.get(order_id)
-        # Check if order exists and is still in basket status
+        # check if order exists and is still in basket
         if order and not order.status:
             return order
     
-    # Create new order for basket
+    # create new order for basket
     order = Order(status=False)
     db.session.add(order)
     db.session.commit()
@@ -27,11 +27,11 @@ def get_or_create_order():
 
 @views.route('/')
 def index():
-    """Landing page with sectioned layout or full catalog when searching."""
+    """landing page with sections or search results"""
     search_query = request.args.get('search', '').strip()
     
     if search_query:
-        # Show full catalog filtered by search
+        # show filtered catalog
         products = Product.query.filter(
             (Product.name.contains(search_query)) | 
             (Product.description.contains(search_query)) |
@@ -39,15 +39,15 @@ def index():
         ).all()
         return render_template('index.html', products=products, search_query=search_query)
     
-    # Sectioned layout
-    # New Arrivals: 6 most recently added products
+    # sectioned layout
+    # new arrivals - 6 most recent
     new_arrivals = Product.query.order_by(Product.id.desc()).limit(6).all()
     
-    # Featured Products: 6 random products
+    # featured - 6 random products
     all_products = Product.query.all()
     featured_products = random.sample(all_products, min(6, len(all_products))) if all_products else []
     
-    # Browse Categories: Get unique categories
+    # get unique categories
     categories = db.session.query(Product.category).distinct().all()
     categories = [cat[0] for cat in categories]
     
@@ -59,23 +59,23 @@ def index():
 
 @views.route('/product/<int:product_id>')
 def product_details(product_id):
-    """Display product details page."""
+    """show product details"""
     product = Product.query.get_or_404(product_id)
     return render_template('product_details.html', product=product)
 
 @views.route('/basket')
 def basket():
-    """Display basket with items, quantities, and totals."""
+    """display basket items"""
     order = get_or_create_order()
     
-    # Calculate total
+    # calc total
     total = sum(detail.subtotal for detail in order.details)
     
     return render_template('basket.html', order=order, total=total)
 
 @views.route('/order', methods=['POST'])
 def add_to_order():
-    """Add a product to the basket or increment quantity if already exists."""
+    """add product to basket or increment quantity"""
     product_id = request.form.get('product_id', type=int)
     
     if not product_id:
@@ -84,18 +84,18 @@ def add_to_order():
     product = Product.query.get_or_404(product_id)
     order = get_or_create_order()
     
-    # Check if product already exists in this order
+    # check if product already in order
     existing_detail = OrderDetail.query.filter_by(
         order_id=order.id,
         product_id=product_id
     ).first()
     
     if existing_detail:
-        # Increment quantity
+        # increment quantity
         existing_detail.quantity += 1
         existing_detail.subtotal = existing_detail.quantity * product.price
     else:
-        # Create new order detail
+        # create new order detail
         detail = OrderDetail(
             order_id=order.id,
             product_id=product_id,
@@ -109,7 +109,7 @@ def add_to_order():
 
 @views.route('/updatequantity', methods=['POST'])
 def update_quantity():
-    """Update the quantity of a product in the basket."""
+    """update quantity of product in basket"""
     product_id = request.form.get('product_id', type=int)
     new_quantity = request.form.get('quantity', type=int)
     
@@ -118,7 +118,7 @@ def update_quantity():
     
     order = get_or_create_order()
     
-    # Find the order detail
+    # find the order detail
     detail = OrderDetail.query.filter_by(
         order_id=order.id,
         product_id=product_id
@@ -126,10 +126,10 @@ def update_quantity():
     
     if detail:
         if new_quantity <= 0:
-            # Remove item if quantity is 0 or negative
+            # remove item if quantity is 0 or less
             db.session.delete(detail)
         else:
-            # Update quantity and subtotal
+            # update quantity and subtotal
             detail.quantity = new_quantity
             detail.subtotal = detail.quantity * detail.product.price
         
@@ -139,7 +139,7 @@ def update_quantity():
 
 @views.route('/removeitem', methods=['POST'])
 def remove_item():
-    """Remove an item from the basket."""
+    """remove item from basket"""
     product_id = request.form.get('product_id', type=int)
     
     if not product_id:
@@ -147,7 +147,7 @@ def remove_item():
     
     order = get_or_create_order()
     
-    # Find and delete the order detail
+    # find and delete order detail
     detail = OrderDetail.query.filter_by(
         order_id=order.id,
         product_id=product_id
@@ -161,7 +161,7 @@ def remove_item():
 
 @views.route('/category/<category_name>')
 def category(category_name):
-    """Display products filtered by category."""
+    """show products by category"""
     products = Product.query.filter_by(category=category_name).all()
     
     return render_template('category.html', 
@@ -171,7 +171,7 @@ def category(category_name):
 
 @views.route('/shop')
 def shop():
-    """Display all products."""
+    """show all products"""
     products = Product.query.filter_by(in_stock=True).all()
     
     return render_template('shop.html', products=products)
@@ -179,12 +179,12 @@ def shop():
 
 @views.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    """Handle checkout process."""
+    """handle checkout"""
     order = get_or_create_order()
     form = CheckoutForm()
     
     if form.validate_on_submit():
-        # Update order with customer details
+        # update order with customer details
         order.firstname = form.firstname.data
         order.surname = form.surname.data
         order.email = form.email.data
@@ -193,20 +193,20 @@ def checkout():
         order.suburb = form.suburb.data
         order.state = form.state.data
         order.postcode = form.postcode.data
-        order.status = True  # Mark as completed
+        order.status = True  # mark as completed
         order.date = datetime.now()
         
-        # Calculate and save total cost
+        # calc and save total
         order.totalcost = sum(detail.subtotal for detail in order.details)
         
         db.session.commit()
         
-        # Clear session
+        # clear session
         session.pop('order_id', None)
         
         return render_template('order_confirmation.html', order=order)
     
-    # Calculate total for display
+    # calc total for display
     total = sum(detail.subtotal for detail in order.details)
     
     return render_template('checkout.html', form=form, order=order, total=total)

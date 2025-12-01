@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# Create an instance of SQLAlchemy
+# create SQLAlchemy instance
 db = SQLAlchemy()
 
 def create_app():
@@ -10,7 +10,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mrstickerman.sqlite'
     db.init_app(app)
 
-    # Register the blueprints
+    # register blueprints
     from .views import views
     from .admin import admin
     app.register_blueprint(views)

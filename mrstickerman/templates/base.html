@@ -60,7 +60,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation Bar -->
+    <!-- nav bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{ url_for('views.index') }}">Mr Stickerman</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -70,7 +70,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('views.index') }}">Home</a></li>
                 
-                <!-- Categories Dropdown -->
+                <!-- categories dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-toggle="dropdown">
                         Categories
@@ -91,7 +91,7 @@
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
             </ul>
             
-            <!-- Search Form -->
+            <!-- search form -->
             <form class="form-inline my-2 my-lg-0 mr-3" method="GET" action="{{ url_for('views.index') }}">
                 <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search products..." value="{{ search_query or '' }}">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
@@ -107,14 +107,14 @@
         </div>
     </nav>
 
-    <!-- Promotional Alert -->
+    <!-- promo alert -->
     <div class="alert alert-success text-center mb-0" role="alert">
         🎉 <strong>Free Shipping</strong> on orders over $20! Limited time offer.
     </div>
 
     {% block content %}{% endblock %}
 
-    <!-- Footer -->
+    <!-- footer -->
     <footer class="bg-dark text-white py-4" id="contact">
         <div class="container text-center">
             <h5>Contact Information</h5>
